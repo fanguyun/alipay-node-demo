@@ -1,0 +1,15 @@
+{
+	"sqltools.connections": [
+		{
+			"database": "alipay",
+			"dialect": "MySQL",
+			"isActive": false,
+			"isConnected": false,
+			"name": "local",
+			"password": "fan2850331",
+			"port": 3306,
+			"server": "localhost",
+			"username": "root"
+		}
+	]
+}

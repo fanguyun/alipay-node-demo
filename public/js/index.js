@@ -1,49 +1,49 @@
-jQuery || require("jquery");
+jQuery || require('jquery');
 
 $(function() {
   // 数组索引充当商品 id 号，有效值从 1 开始
   var goods = [
     {},
     {
-      name: "大卫龙",
+      name: '大卫龙',
       price: 2
     },
     {
-      name: "冰阔咯",
+      name: '冰阔咯',
       price: 6
     },
     {
-      name: "雪碧",
+      name: '雪碧',
       price: 3
     },
     {
-      name: "QQB",
+      name: 'QQB',
       price: 1
     }
   ];
 
   function refreshForm() {
     // 获取当前商品 id
-    var goodsId = $("#goods").val();
+    var goodsId = $('#goods').val();
     // 获取单价
     var price = goods[goodsId].price;
     // 获取当前购买总数
-    var count = $(".count").val();
+    var count = $('.count').val();
     // 设置单价显示
-    $("#price").html(price);
+    $('#price').html(price);
     // 设置总价显示
-    $("#total").html((price * count).toFixed(2));
+    $('#total').html((price * count).toFixed(2));
   }
 
   refreshForm();
 
   // 当改变商品选项时
-  $("#goods").change(function() {
+  $('#goods').change(function() {
     refreshForm();
   });
 
   // 当输入数量时
-  $(".count").on("input", function() {
+  $('.count').on('input', function() {
     // 获取当前值
     var count = $(this).val();
     if (isNaN(Number(count)) || Number(count) <= 0) {
@@ -52,26 +52,26 @@ $(function() {
     refreshForm();
   });
 
-  $("#buy").click(function() {
+  $('#buy').click(function() {
     if (
-      !$("#username")
+      !$('#username')
         .val()
         .trim()
     ) {
-      alert("请输入下单姓名！");
+      alert('请输入下单姓名！');
       return;
     }
 
-    var goodsName = goods[$("#goods").val()].name;
-    var count = $(".count").val();
-    var price = goods[$("#goods").val()].price;
-    var cost = $("#total").html();
+    var goodsName = goods[$('#goods').val()].name;
+    var count = $('.count').val();
+    var price = goods[$('#goods').val()].price;
+    var cost = $('#total').html();
 
     // 像服务器发送付款请求确认
     $.ajax({
-      url: "./payinfo",
+      url: './payinfo',
       data: {
-        payName: $("#username")
+        payName: $('#username')
           .val()
           .trim(),
         goodsName: goodsName,
@@ -93,10 +93,10 @@ $(function() {
           if (confirm(info)) {
             // 利用 ajax 发送订单生成订单请求
             $.ajax({
-              type: "post",
-              url: "./createOrder",
+              type: 'post',
+              url: './createOrder',
               data: {
-                payName: $("#username")
+                payName: $('#username')
                   .val()
                   .trim(),
                 goodsName: goodsName,
@@ -106,7 +106,7 @@ $(function() {
               },
               // 服务器向支付宝请求订单后，返回的是一个form表单，需要插入到浏览器中进行自动跳转
               success: function(res) {
-                $("body").append($(res));
+                $('body').append($(res));
               }
             });
           }
@@ -116,28 +116,28 @@ $(function() {
   });
 
   // 点击查询订单
-  $("#searchOrder").click(function() {
+  $('#searchOrder').click(function() {
     // 发送请求
     $.ajax({
-      url: "./getorder",
+      url: './getorder',
       success: function(res) {
-        console.log("res", res);
+        console.log('res', res);
         if (res.code === 200) {
           var list = JSON.parse(res.list);
-          var htmlStr = "";
+          var htmlStr = '';
           list.forEach(function(ele) {
-            htmlStr += "<tr>";
+            htmlStr += '<tr>';
             for (var key in ele) {
               var info = ele[key];
-              if (key === "price" || key === "total_amount") {
-                info = info.toFixed(2) + "￥";
+              if (key === 'price' || key === 'total_amount') {
+                info = info.toFixed(2) + '￥';
               }
 
-              htmlStr += "<td>" + info + "</td>";
+              htmlStr += '<td>' + info + '</td>';
             }
-            htmlStr += "</tr>";
+            htmlStr += '</tr>';
           });
-          $("#order_list").html(htmlStr);
+          $('#order_list').html(htmlStr);
         }
       }
     });
