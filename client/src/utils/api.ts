@@ -11,6 +11,9 @@ axios.defaults = {
   timeout: 20000,
 };
 
+// const baseUrl = 'https://server.jasonfan.now.sh/';
+const baseUrl = '';
+
 // 添加请求拦截器
 // axios.interceptors.request.use(
 //   config => {
@@ -92,7 +95,7 @@ const Api = {
   get: (url: string, params?: any) => {
     return new Promise((resolve, reject) => {
       axios
-        .get(url, { params })
+        .get(baseUrl + url, { params })
         .then(res => {
           resolve(res.data);
         })
@@ -104,7 +107,7 @@ const Api = {
   post: (url: string, params?: any, config?: any) => {
     return new Promise((resolve, reject) => {
       axios
-        .post(url, params, config)
+        .post(baseUrl + url, params, config)
         .then(res => {
           resolve(res.data);
         })

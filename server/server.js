@@ -6,6 +6,22 @@ const mysql = require(path.join(__dirname, './mysql.js'));
 const express = require('express');
 // 获取 express 实例对象
 let app = express();
+// 允许跨域访问
+app.all('*', function(req, res, next) {
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header(
+    'Access-Control-Allow-Headers',
+    'Content-Type, Content-Length, Authorization, Accept, X-Requested-With , yourHeaderFeild'
+  );
+  res.header('Access-Control-Allow-Methods', 'PUT, POST, GET, DELETE, OPTIONS');
+
+  if (req.method == 'OPTIONS') {
+    res.send(200);
+    /让options请求快速返回/;
+  } else {
+    next();
+  }
+});
 
 // 设置托管静态资源
 // app.use(express.static(path.join(__dirname, './public')));
@@ -65,32 +81,6 @@ app.post('/api/alipay/createOrder', (req, res) => {
   }
   asyncCreate();
 });
-
-// 支付的信息展示
-// app.get('/api/alipay/payresult', (req, res) => {
-//   let data = req;
-//   console.log(data);
-//   if (data) {
-//     res.send(
-//       Object.assign(data, {
-//         code: 200
-//       })
-//     );
-//   } else {
-//     res.send({
-//       msg: '支付失败',
-//       code: 200
-//     });
-//   }
-//   // let htmlStr = '';
-//   // htmlStr += `<p>` + '商户订单号' + ': ' + req.query.out_trade_no + '</p>';
-//   // htmlStr += `<p>` + '支付宝交易订单号' + ': ' + req.query.trade_no + '</p>';
-//   // htmlStr += `<p>` + '交易金额' + ': ' + req.query.total_amount + '￥</p>';
-//   // htmlStr += `<p>` + '交易时间' + ': ' + req.query.timestamp + '￥</p>';
-//   // htmlStr +=
-//   //   '<h1 style:"text-align:center;">支付成功！！！<a href="./index.html">返回首页!</a></h1>';
-//   // res.send(htmlStr);
-// });
 
 app.post('/api/alipay/notify', (req, res) => {
   // 输出验签结果
