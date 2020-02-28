@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "server": "cd ./server && yarn start",
-    "client": "",
+    "client": "cd ./client && yarn start",
     "ins": "cd ./server && npm install && cd ./client && npm install",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
