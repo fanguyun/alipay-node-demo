@@ -8,24 +8,27 @@ const express = require('express');
 let app = express();
 
 // 设置托管静态资源
-app.use(express.static(path.join(__dirname, './public')));
+// app.use(express.static(path.join(__dirname, './public')));
 // 处理 post 请求参数
 app.use(
   bp.urlencoded({
     extended: false
   })
 );
+app.get('/', (req, res) => {
+  res.send({
+    msd: 'server ok',
+    code: 200
+  });
+});
 
 // 前端响应要创建订单的数据对象
-app.get('/payinfo', (req, res) => {
+app.get('/api/alipay/payinfo', (req, res) => {
   let data = req.query;
   // 做一个简单的商品判断
   if (
     data &&
-    (data.goodsName === '大卫龙' ||
-      data.goodsName === '冰阔咯' ||
-      data.goodsName === '雪碧' ||
-      data.goodsName === 'QQB') &&
+    ['口罩', '可乐', 'N95', '消毒水', '炸鸡'].includes(data.goodsName) &&
     data.count &&
     data.cost
   ) {
@@ -35,8 +38,10 @@ app.get('/payinfo', (req, res) => {
       })
     );
   } else {
-    res.setHeader('content-type', 'application/javascript');
-    res.send('alert("信息有误，请重新尝试！！！")');
+    res.send({
+      msd: '商品信息错误，请重新提交',
+      code: 500
+    });
   }
 });
 
@@ -46,8 +51,7 @@ const createOrder = require(path.join(__dirname, './createOrder.js')).createOrde
 const checkSign = require(path.join(__dirname, './checkSign.js'));
 
 // 生成订单请求
-app.post('/createOrder', (req, res) => {
-  console.log(req.body.price);
+app.post('/api/alipay/createOrder', (req, res) => {
   req.body.pack_params = {
     payName: req.body.payName,
     goodsName: req.body.goodsName,
@@ -63,18 +67,32 @@ app.post('/createOrder', (req, res) => {
 });
 
 // 支付的信息展示
-app.get('/payresult', (req, res) => {
-  let htmlStr = '';
-  htmlStr += `<p>` + '商户订单号' + ': ' + req.query.out_trade_no + '</p>';
-  htmlStr += `<p>` + '支付宝交易订单号' + ': ' + req.query.trade_no + '</p>';
-  htmlStr += `<p>` + '交易金额' + ': ' + req.query.total_amount + '￥</p>';
-  htmlStr += `<p>` + '交易时间' + ': ' + req.query.timestamp + '￥</p>';
-  htmlStr +=
-    '<h1 style:"text-align:center;">支付成功！！！<a href="./index.html">返回首页!</a></h1>';
-  res.send(htmlStr);
-});
+// app.get('/api/alipay/payresult', (req, res) => {
+//   let data = req;
+//   console.log(data);
+//   if (data) {
+//     res.send(
+//       Object.assign(data, {
+//         code: 200
+//       })
+//     );
+//   } else {
+//     res.send({
+//       msg: '支付失败',
+//       code: 200
+//     });
+//   }
+//   // let htmlStr = '';
+//   // htmlStr += `<p>` + '商户订单号' + ': ' + req.query.out_trade_no + '</p>';
+//   // htmlStr += `<p>` + '支付宝交易订单号' + ': ' + req.query.trade_no + '</p>';
+//   // htmlStr += `<p>` + '交易金额' + ': ' + req.query.total_amount + '￥</p>';
+//   // htmlStr += `<p>` + '交易时间' + ': ' + req.query.timestamp + '￥</p>';
+//   // htmlStr +=
+//   //   '<h1 style:"text-align:center;">支付成功！！！<a href="./index.html">返回首页!</a></h1>';
+//   // res.send(htmlStr);
+// });
 
-app.post('/notify.html', (req, res) => {
+app.post('/api/alipay/notify', (req, res) => {
   // 输出验签结果
   async function checkResult(postData) {
     let result = await checkSign(postData);
@@ -102,12 +120,12 @@ app.post('/notify.html', (req, res) => {
 });
 
 // 查询订单接口
-app.get('/getorder', (req, res) => {
+app.get('/api/alipay/getorder', (req, res) => {
   mysql.selectSql('select * from order_list', (err, result) => {
     result = Object.assign({
       code: 200,
       msg: '获取成功',
-      list: JSON.stringify(result)
+      list: result
     });
     res.send(result);
   });
