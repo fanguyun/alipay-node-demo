@@ -6,12 +6,19 @@
 const mysql = require('mysql');
 
 // 配置 mysql
+// const mysqlConfig = {
+//   host: 'localhost', // 数据库主机名
+//   port: '3306', // 端口号
+//   user: 'root', // 用户名
+//   password: '', // 密码
+//   database: 'alipay' // 数据库名
+// };
 const mysqlConfig = {
-  host: 'localhost', // 数据库主机名
+  host: 'sql12.freemysqlhosting.net', // 数据库主机名
   port: '3306', // 端口号
-  user: 'root', // 用户名
-  password: 'fan2850331', // 密码
-  database: 'alipay' // 数据库名
+  user: 'sql12324939', // 用户名
+  password: 'K2HiWerqam', // 密码
+  database: 'sql12324939' // 数据库名
 };
 
 // 封装查询函数
