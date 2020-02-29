@@ -7,5 +7,17 @@
       "use": "@now/node-server"
     }
   ],
-  "routes": [{ "src": "/", "dest": "server.js" }]
+  "routes": [
+    { "src": "/", "dest": "server.js" },
+    { "src": "/api/alipay/payinfo", "dest": "server.js" },
+    { "src": "/api/alipay/createOrder", "dest": "server.js" },
+    {
+      "src": "/api/alipay/notify",
+      "dest": "server.js"
+    },
+    {
+      "src": "/api/alipay/getorder",
+      "dest": "server.js"
+    }
+  ]
 }

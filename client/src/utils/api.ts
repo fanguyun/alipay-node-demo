@@ -11,8 +11,8 @@ axios.defaults = {
   timeout: 20000,
 };
 
-// const baseUrl = 'https://server.jasonfan.now.sh/';
-const baseUrl = '';
+const baseUrl = 'https://alipay-node.now.sh';
+// const baseUrl = '';
 
 // 添加请求拦截器
 // axios.interceptors.request.use(

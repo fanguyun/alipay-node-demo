@@ -4,11 +4,12 @@
 </p>
 
 > 基于 AliPaySDK 的 node 支付宝支付 demo
+> 沙箱环境 demo：[https://alipay.jasonfan.now.sh](https://alipay.jasonfan.now.sh)
 
 ## 说明
 
 ```sh
-.
+.s
 ├── README.md
 ├── client * 客户端
 └── server * node服务端

@@ -2,7 +2,7 @@ import Api from '../utils/api';
 
 // 提交订单
 export function payInfo(params: any = {}) {
-  return Api.get('api/alipay/payinfo', params);
+  return Api.get('/api/alipay/payinfo', params);
 }
 
 // 发起支付

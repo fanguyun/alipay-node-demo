@@ -35,7 +35,7 @@ const config: IConfig = {
         antd: true,
         dva: true,
         dynamicImport: false,
-        title: 'client',
+        title: 'AliPay Node Demo',
         dll: false,
         routes: {
           exclude: [
