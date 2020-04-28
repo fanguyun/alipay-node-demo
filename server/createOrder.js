@@ -16,7 +16,9 @@ const AlipayFormData = require('alipay-sdk/lib/form').default;
 
 // 编写一个创建支付订单的函数，异步等待执行的函数
 async function createOrder(goods) {
-  let method = 'alipay.trade.page.pay'; // 统一收单下单并支付页面接口
+  // 统一收单下单并支付页面接口
+  // let method = 'alipay.trade.page.pay'; // PC端
+  let method = 'alipay.trade.wap.pay'; // 手机端
   // 公共参数 可根据业务需要决定是否传入，当前不用
   // let params = {
   //     app_id: '', // 应用 id
@@ -34,7 +36,7 @@ async function createOrder(goods) {
     total_amount: goods.cost, // 商品价格
     subject: goods.goodsName, // 商品名称
     timeout_express: '5m', // 超时时间
-    passback_params: JSON.stringify(goods.pack_params) // 将会返回的一个参数，可用于自定义商品信息最后做通知使用
+    passback_params: JSON.stringify(goods.pack_params), // 将会返回的一个参数，可用于自定义商品信息最后做通知使用
   };
   const formData = new AlipayFormData(); // 获取一个实例化对象
   formData.addField('returnUrl', 'http://h5-saas.seeapp.com:8000/#/success'); // 客户端支付成功后会同步跳回的地址
@@ -46,7 +48,7 @@ async function createOrder(goods) {
     method,
     {},
     {
-      formData: formData
+      formData: formData,
     }
   );
   // 返回订单的结果信息
@@ -75,5 +77,5 @@ function getFormatDate() {
 
 // 将生成订单的方法暴露出去
 module.exports = {
-  createOrder: createOrder
+  createOrder: createOrder,
 };
